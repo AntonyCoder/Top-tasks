@@ -45,9 +45,11 @@ export class TasksWrapper {
     //Отрисовка задач из массива
     renderTasks() {
         const allTasks = document.querySelector('.all-tasks');
+        this.clear();
 
-        const newTask = this.currentTasks.at(-1);
-        allTasks.appendChild(newTask.createNewTask());
+        this.currentTasks.forEach(task => {
+            allTasks.appendChild(task.createNewTask())
+        })
     }
 
     //Добавление задач в закреп
@@ -86,7 +88,7 @@ export class TasksWrapper {
             })
         }
     }
-
+    //Удаление надписи No pinned tasks
     removePinnedText() {
         const pinnedText = document.querySelector('.pinned-text');
         if (pinnedText) {
@@ -94,11 +96,25 @@ export class TasksWrapper {
         }
     }
 
+    //Добавление надписи No pinned tasks
     addPinnedText() {
-        const pinnedTasks = document.querySelector('.pinned-tasks')
-        const pinnedText = document.createElement('p');
-        pinnedText.classList.add('pinned-text');
-        pinnedText.textContent = 'No pinned tasks';
-        pinnedTasks.appendChild(pinnedText);
+        if (this.pinnedTasks.length === 0) {
+            const pinnedTasks = document.querySelector('.pinned-tasks');
+            const pinnedText = document.createElement('p');
+            pinnedText.classList.add('pinned-text');
+            pinnedText.textContent = 'No pinned tasks';
+            pinnedTasks.appendChild(pinnedText);
+        }
+    }
+    //Очистка блока All Tasks
+    clear() {
+        const tasks = document.querySelectorAll('.all-tasks .task');
+        const allTaskText = document.querySelector('.all-task-text');
+        if (allTaskText) {
+            allTaskText.remove();
+        }
+        for (const task of tasks) {
+            task.remove();
+        }
     }
 }

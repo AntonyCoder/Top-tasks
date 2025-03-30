@@ -32,14 +32,12 @@ export class SearchFilter {
                 if (this.searchField.value === '') {
                     return;
                 }
-                
+
                 const task = new Task(this.searchField.value);
 
                 this.currentTasks.push(task);
                 this.allTasks.push(task);
-
                 this.taskWrapper.renderTasks();
-
                 this.searchField.value = '';
             }
         });
