@@ -1,11 +1,13 @@
 import './tasksWrapper.css';
 import { currentTasks } from '../../taskData';
+import { pinnedTasks } from '../../taskData';
 
 export class TasksWrapper {
     constructor() {
         this.currentTasks = currentTasks;
+        this.pinnedTasks = pinnedTasks
     }
-
+    //Отрисовка блока с задачами 
     renderTasksWrapper() {
         this.container = document.querySelector('.container');
 
@@ -40,20 +42,63 @@ export class TasksWrapper {
         this.allTasks.insertAdjacentElement('afterbegin', taskTitle);
     }
 
+    //Отрисовка задач из массива
     renderTasks() {
         const allTasks = document.querySelector('.all-tasks');
-        this.clear();
-        
-        this.currentTasks.forEach((task) => {
-           allTasks.appendChild(task.createTask());
-        })
+
+        const newTask = this.currentTasks.at(-1);
+        allTasks.appendChild(newTask.createNewTask());
     }
 
-    clear(){
-        const tasks = document.querySelectorAll('.task');
+    //Добавление задач в закреп
+    addPinTask(e) {
+        const tasksWrapper = document.querySelector('.all-tasks');
 
-        for(const task of tasks){
-            task.remove();
+        const pinnedTasks = document.querySelector('.pinned-tasks');
+
+
+        if (e.target.closest('.all-tasks')) {
+            this.currentTasks.forEach((task, index) => {
+                if (task.isPinned === true) {
+                    this.pinnedTasks.push(task);
+                    this.currentTasks.splice(index, 1);
+                    const tasks = tasksWrapper.children;
+                    tasksWrapper.removeChild(tasks[index + 1]);
+
+                    const newPinTask = this.pinnedTasks.at(-1);
+                    pinnedTasks.appendChild(newPinTask.createPinTask());
+                    this.removePinnedText();
+                }
+            })
+        } else {
+            this.pinnedTasks.forEach((task, index) => {
+                if (task.isPinned === false) {
+                    this.currentTasks.push(task);
+                    this.pinnedTasks.splice(index, 1);
+                    const tasks = pinnedTasks.children;
+                    pinnedTasks.removeChild(tasks[index + 1]);
+
+                    const newAllTask = this.currentTasks.at(-1);
+                    tasksWrapper.appendChild(newAllTask.createNewTask());
+
+                    this.addPinnedText();
+                }
+            })
         }
+    }
+
+    removePinnedText() {
+        const pinnedText = document.querySelector('.pinned-text');
+        if (pinnedText) {
+            pinnedText.remove();
+        }
+    }
+
+    addPinnedText() {
+        const pinnedTasks = document.querySelector('.pinned-tasks')
+        const pinnedText = document.createElement('p');
+        pinnedText.classList.add('pinned-text');
+        pinnedText.textContent = 'No pinned tasks';
+        pinnedTasks.appendChild(pinnedText);
     }
 }

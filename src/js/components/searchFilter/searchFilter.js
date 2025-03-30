@@ -12,6 +12,7 @@ export class SearchFilter {
         this.taskWrapper = new TasksWrapper();
     }
 
+    // Отрисовка поля ввода
     renderSearchFilter() {
         const container = document.querySelector('.container');
         this.searchField = document.createElement('input');
@@ -21,21 +22,22 @@ export class SearchFilter {
 
         container.appendChild(this.searchField);
 
-        this.newTask();
+        this.addNewTask();
     }
 
-    newTask() {
+    // Добавление новой задачи в список
+    addNewTask() {
         this.searchField.addEventListener('keydown', (e) => {
             if (e.key === "Enter") {
                 if (this.searchField.value === '') {
                     return;
                 }
+                
                 const task = new Task(this.searchField.value);
 
                 this.currentTasks.push(task);
-                this.allTasks.push(task)
+                this.allTasks.push(task);
 
-                console.log(this.currentTasks);
                 this.taskWrapper.renderTasks();
 
                 this.searchField.value = '';
