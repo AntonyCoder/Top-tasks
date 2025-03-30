@@ -9,29 +9,30 @@ export function filter() {
             return item.taskName.toLowerCase().includes(inputText)
         })
         const allTasks = document.querySelector('.all-tasks');
-        const allTaskText = document.querySelector('.all-task-text')
+        const allTaskText = document.querySelector('.all-task-text');
 
         clear();
-        if (newArr.length === 0 && !allTaskText) {
-            const allTaskText = document.createElement('p');
-            allTaskText.classList.add('all-task-text');
-            allTaskText.textContent = 'No tasks found';
-            allTasks.appendChild(allTaskText);
+        if (newArr.length === 0) {
+            if (!allTaskText) {
+                const allTaskText = document.createElement('p');
+                allTaskText.classList.add('all-task-text');
+                allTaskText.textContent = 'No tasks found';
+                allTasks.appendChild(allTaskText);
+            }
+        } else {
+            if (allTaskText) {
+                allTaskText.remove();
+            }
+            newArr.forEach(task => {
+                allTasks.appendChild(task.createNewTask());
+            })
         }
 
-        newArr.forEach(task => {
-            allTasks.appendChild(task.createNewTask());
-        })
     })
-
 }
 
 function clear() {
     const tasks = document.querySelectorAll('.all-tasks .task');
-    const allTaskText = document.querySelector('.all-task-text');
-    if (allTaskText) {
-        allTaskText.remove();
-    }
     for (const task of tasks) {
         task.remove();
     }

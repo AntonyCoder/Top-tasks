@@ -3,6 +3,7 @@ import { Task } from '../task/task';
 import { currentTasks } from '../../taskData';
 import { allTasks } from '../../taskData';
 import { TasksWrapper } from '../tasksWrapper/tasksWrapper';
+import { Error } from '../error/error';
 
 
 export class SearchFilter {
@@ -30,6 +31,8 @@ export class SearchFilter {
         this.searchField.addEventListener('keydown', (e) => {
             if (e.key === "Enter") {
                 if (this.searchField.value === '') {
+                    const error = new Error();
+                    error.renderError();
                     return;
                 }
 
